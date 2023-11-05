@@ -14,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
+  bool isRemember = false;
+
   @override
   void initState() {
     super.initState();
@@ -65,8 +67,12 @@ class _LoginPageState extends State<LoginPage> {
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(6))),
-                          value: true,
-                          onChanged: (isRemember) {}),
+                          value: isRemember,
+                          onChanged: (value) {
+                            setState(() {
+                              isRemember = value??!isRemember;
+                            });
+                          }),
                       const Text("Remember Me")
                     ],
                   ),
