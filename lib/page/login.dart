@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 type: TextInputType.emailAddress,
               ),
               const SizedBox(
-                height: 8,
+                height: 12,
               ),
               MyTextFormField(
                 controller: passwordController,
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 isPassword: true,
               ),
               const SizedBox(
-                height: 8,
+                height: 12,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ElevatedButton(onPressed: () {}, child: const Text("Login")),
               const SizedBox(
-                height: 8,
+                height: 12,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
