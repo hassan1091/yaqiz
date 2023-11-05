@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/page/signup.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 import 'package:yaqiz/widget/my_text_form_field.dart';
 
@@ -6,12 +7,26 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class LoginState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,19 +85,27 @@ class LoginState extends State<LoginPage> {
                 height: 8,
               ),
               ElevatedButton(onPressed: () {}, child: const Text("Login")),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don’t have an account ?"),
                   InkWell(
                     child: const Text(
-                      "Sign Up",
+                      "Signup",
                       style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignupPage(),
+                          ));
+                    },
                   ),
                 ],
               )
