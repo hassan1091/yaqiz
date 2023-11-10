@@ -22,7 +22,8 @@ class _HomePageState extends State<HomePage> {
             _buildGreeting(),
             const SizedBox(height: 12),
             _buildRemainderCard(),
-
+            const SizedBox(height: 24),
+            _buildBedsCardHead(),
           ],
         ),
       ),
@@ -117,5 +118,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
+  Widget _buildBedsCardHead() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Beds",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        Text("Show more"),
+      ],
+    );
+  }
 }
