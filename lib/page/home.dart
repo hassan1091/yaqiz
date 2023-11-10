@@ -20,6 +20,9 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: kToolbarHeight),
             _buildHeader(context),
             _buildGreeting(),
+            const SizedBox(height: 12),
+            _buildRemainderCard(),
+
           ],
         ),
       ),
@@ -56,6 +59,61 @@ class _HomePageState extends State<HomePage> {
     return const Text(
       "Hi, Anas",
       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildRemainderCard() {
+    return Card(
+      shape: ContinuousRectangleBorder(
+        borderRadius: BorderRadius.circular(42),
+      ),
+      clipBehavior: Clip.hardEdge,
+      elevation: 10,
+      child: Column(
+        children: [
+          const CustomGradientBackground(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text("Remainder"), Text("28 Sep")],
+              ),
+            ),
+          ),
+          CustomGradientBackground(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ListView.builder(
+                itemCount: 4,
+                padding: const EdgeInsets.only(bottom: 16),
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        child: Text(
+                          "Visit bed $index",
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        "01:51:39",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
