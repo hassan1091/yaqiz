@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 
 class CustomGradientBackground extends StatelessWidget {
-  const CustomGradientBackground({super.key, this.child});
+  const CustomGradientBackground(
+      {super.key,
+      this.child,
+      this.colors,
+      this.begin = Alignment.topRight,
+      this.end = Alignment.bottomLeft});
 
   final Widget? child;
+  final List<Color>? colors;
+  final Alignment begin;
+  final Alignment end;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
-        colors: [Color(0xFFD8FFE8), Color(0xFFECFFF8), Color(0xFF99F1D7)],
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
+        colors: colors ??
+            [
+              const Color(0xFFD8FFE8),
+              const Color(0xFFECFFF8),
+              const Color(0xFF99F1D7)
+            ],
+        begin: begin,
+        end: end,
       )),
       child: child,
     );
