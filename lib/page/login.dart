@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/page/home.dart';
 import 'package:yaqiz/page/signup.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 import 'package:yaqiz/widget/my_text_form_field.dart';
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                           value: isRemember,
                           onChanged: (value) {
                             setState(() {
-                              isRemember = value??!isRemember;
+                              isRemember = value ?? !isRemember;
                             });
                           }),
                       const Text("Remember Me")
@@ -90,7 +91,15 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 8,
               ),
-              ElevatedButton(onPressed: () {}, child: const Text("Login")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ));
+                  },
+                  child: const Text("Login")),
               const SizedBox(
                 height: 12,
               ),
