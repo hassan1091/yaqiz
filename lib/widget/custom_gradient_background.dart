@@ -8,6 +8,7 @@ class CustomGradientBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.maxFinite,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
         colors: [Color(0xFFD8FFE8), Color(0xFFECFFF8), Color(0xFF99F1D7)],
