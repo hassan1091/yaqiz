@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/login.dart';
+import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 24),
             _buildBedsCardHead(),
             const SizedBox(height: 12),
-            _buildBedsCardGrid()
+            const BedCardGrid()
           ],
         ),
       ),
@@ -121,47 +123,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBedsCardHead() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           "Beds",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        Text("Show more"),
+        InkWell(onTap: (){
+          Navigator.push(context, 
+          MaterialPageRoute(builder: (context) => const BedsPage(),));
+        },
+            child: const Text("Show more")),
       ],
     );
   }
-
-  Widget _buildBedsCardGrid() {
-    return GridView.builder(
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 32),
-      itemCount: 3,
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      itemBuilder: (context, index) => Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        clipBehavior: Clip.hardEdge,
-        child: CustomGradientBackground(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.red,Colors.red.shade400,Colors.red.shade200,Colors.white],
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset("assets/life_line.png",height: 100,color: Colors.white),
-                  Text("BED $index",style: const TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold)),
-                  const Text("Name",style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w300)),
-                  const SizedBox(),
-                ]),
-          ),
-        ),
-      ),
-    );
-  }
 }
+
