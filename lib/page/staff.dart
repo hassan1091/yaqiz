@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaqiz/page/home.dart';
+import 'package:yaqiz/page/select_bed.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class StaffPage extends StatelessWidget {
@@ -28,7 +29,14 @@ class StaffPage extends StatelessWidget {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectBedPage(),
+                    ));
+
+              },
               style: const ButtonStyle(alignment: Alignment.centerLeft),
               child: const Text("Select Bed"),
             ),
