@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
@@ -6,7 +7,8 @@ import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, this.isAdmin = false}) : super(key: key);
+  final bool isAdmin;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -52,6 +54,22 @@ class _HomePageState extends State<HomePage> {
             const Text("Hi, Anas",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
+            if(widget.isAdmin) ...[
+              const Text("Doctors",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(itemCount: 10,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      const Icon(CupertinoIcons.person_alt_circle,size: 64,color: Colors.blue,),
+                      Text("Staff $index")
+                    ],
+                  ), separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12),),
+              )
+            ],
             Card(
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(42),
