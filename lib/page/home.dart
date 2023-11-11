@@ -29,7 +29,10 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                     icon: const Icon(Icons.person_outline),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ContactPage(),));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ContactPage()));
                     },
                   ),
                   IconButton(
@@ -46,8 +49,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Text(
-                "Hi, Anas",
+            const Text("Hi, Anas",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             Card(
@@ -74,29 +76,28 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 4,
                         padding: const EdgeInsets.only(bottom: 16),
                         shrinkWrap: true,
-                        itemBuilder: (context, index) =>
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                    child: Text(
-                                      "Visit bed $index",
-                                      style: const TextStyle(
-                                        color: Colors.blue,
-                                        fontStyle: FontStyle.italic,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                child: Text(
+                                  "Visit bed $index",
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontStyle: FontStyle.italic,
+                                    decoration: TextDecoration.underline,
                                   ),
-                                  const Text(
-                                    "01:51:39",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              const Text(
+                                "01:51:39",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -111,10 +112,14 @@ class _HomePageState extends State<HomePage> {
                   "Beds",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                InkWell(onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const BedsPage(),));
-                },
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BedsPage(),
+                          ));
+                    },
                     child: const Text("Show more")),
               ],
             ),
@@ -125,6 +130,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
-
