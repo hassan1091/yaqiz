@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
 import 'package:yaqiz/page/login.dart';
+import 'package:yaqiz/page/staff.dart';
 import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
@@ -54,20 +55,36 @@ class _HomePageState extends State<HomePage> {
             const Text("Hi, Anas",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            if(widget.isAdmin) ...[
+            if (widget.isAdmin) ...[
               const Text("Doctors",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 100,
-                child: ListView.separated(itemCount: 10,
+                child: ListView.separated(
+                  itemCount: 10,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Column(
                     children: [
-                      const Icon(CupertinoIcons.person_alt_circle,size: 64,color: Colors.blue,),
+                      IconButton(
+                          iconSize: 64,
+                          padding: EdgeInsets.zero,
+                          color: Colors.blue,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const StaffPage()));
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.person_alt_circle,
+                          )),
                       Text("Staff $index")
                     ],
-                  ), separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 12),),
+                  ),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(width: 12),
+                ),
               )
             ],
             Card(
