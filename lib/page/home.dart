@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaqiz/page/beds.dart';
+import 'package:yaqiz/page/contact.dart';
 import 'package:yaqiz/page/login.dart';
 import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
@@ -27,7 +28,9 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.person_outline),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ContactPage(),));
+                    },
                   ),
                   IconButton(
                     icon: const Icon(Icons.login_outlined),
