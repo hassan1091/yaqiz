@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/page/bed.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class BedCardGrid extends StatelessWidget {
@@ -9,8 +10,8 @@ class BedCardGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate:
-      const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 32),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, crossAxisSpacing: 32),
       itemCount: 3,
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -21,18 +22,36 @@ class BedCardGrid extends StatelessWidget {
         child: CustomGradientBackground(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.red,Colors.red.shade400,Colors.red.shade200,Colors.white],
+          colors: [
+            Colors.red,
+            Colors.red.shade400,
+            Colors.red.shade200,
+            Colors.white
+          ],
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset("assets/life_line.png",height: 100,color: Colors.white),
-                  Text("BED $index",style: const TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold)),
-                  const Text("Name",style: TextStyle(color: Colors.white,fontSize: 12,fontWeight: FontWeight.w300)),
-                  const SizedBox(),
-                ]),
+            child: InkWell(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Bed())),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.asset("assets/life_line.png",
+                        height: 100, color: Colors.white),
+                    Text("BED $index",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                    const Text("Name",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300)),
+                    const SizedBox(),
+                  ]),
+            ),
           ),
         ),
       ),
