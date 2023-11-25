@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
+import 'package:yaqiz/widget/my_text_form_field.dart';
 import 'package:yaqiz/widget/smart_switch.dart';
 
 class ReminderPage extends StatefulWidget {
@@ -35,7 +36,19 @@ class _ReminderPageState extends State<ReminderPage> {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              const TimeInput()
+              const TimeInput(),
+              const SizedBox(height: 16),
+              const MyTextFormField(
+                lable: "Comment",
+                hint: "Please write a comment for this visit and next visit",
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor:
+                      MaterialStatePropertyAll(Color(0xff5DCCFC))),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("SET A REMINDER"))
             ],
           ),
         ),
