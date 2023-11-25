@@ -4,17 +4,17 @@ import 'package:flutter/services.dart';
 class MyTextFormField extends StatefulWidget {
   const MyTextFormField(
       {Key? key,
-        required this.lable,
-        this.controller,
-        this.hint,
-        this.initial,
-        this.isPassword = false,
-        this.isReadOnly = false,
-        this.isAddressMap = false,
-        this.type,
-        this.validator,
-        this.onTap,
-        this.onEditingComplete})
+      required this.lable,
+      this.controller,
+      this.hint,
+      this.initial,
+      this.isPassword = false,
+      this.isReadOnly = false,
+      this.isAddressMap = false,
+      this.type,
+      this.validator,
+      this.onTap,
+      this.onEditingComplete})
       : super(key: key);
   final String lable;
   final TextEditingController? controller;
@@ -50,20 +50,21 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.type == TextInputType.multiline ? 1 : null,
       decoration: InputDecoration(
           label: Text(widget.lable),
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
           border: const OutlineInputBorder(),
           suffixIcon: widget.isPassword
               ? IconButton(
-              onPressed: switchSecure,
-              icon:
-              Icon(isSecure ? Icons.visibility_off : Icons.visibility))
+                  onPressed: switchSecure,
+                  icon:
+                      Icon(isSecure ? Icons.visibility_off : Icons.visibility))
               : widget.isAddressMap
-              ? IconButton(
-              onPressed: widget.onTap,
-              icon: const Icon(Icons.add_location_alt_outlined))
-              : null,
+                  ? IconButton(
+                      onPressed: widget.onTap,
+                      icon: const Icon(Icons.add_location_alt_outlined))
+                  : null,
           hintText: widget.hint),
       keyboardType: widget.type,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -71,8 +72,8 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
       initialValue: widget.initial,
       inputFormatters: widget.type == TextInputType.number
           ? <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'\d')),
-      ]
+              FilteringTextInputFormatter.allow(RegExp(r'\d')),
+            ]
           : null,
       controller: widget.controller,
       obscureText: isSecure,
@@ -83,4 +84,3 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
     );
   }
 }
-
