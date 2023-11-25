@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:yaqiz/alarm_info.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
 import 'package:yaqiz/page/login.dart';
@@ -16,6 +18,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ValueNotifier<List<AlarmInfo>> alarms =
+      ValueNotifier(Hive.box<AlarmInfo>('alarms').values.toList());
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,33 +114,37 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  CustomGradientBackground(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ListView.builder(
-                        itemCount: 4,
-                        padding: const EdgeInsets.only(bottom: 16),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                child: Text(
-                                  "Visit bed $index",
-                                  style: const TextStyle(
-                                    color: Colors.blue,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline,
+                  ValueListenableBuilder(
+                    valueListenable: alarms,
+                    builder: (context, value, child) =>
+                        CustomGradientBackground(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ListView.builder(
+                          itemCount: value.length,
+                          padding: const EdgeInsets.only(bottom: 16),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  child: Text(
+                                    "Visit ${value[index].title}",
+                                    style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontStyle: FontStyle.italic,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Text(
-                                "01:51:39",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ],
+                                Text(
+                                  "${value[index].alarmDateTime.hour}:${value[index].alarmDateTime.minute}",
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
