@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/page/reminder.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class Bed extends StatelessWidget {
@@ -51,9 +52,13 @@ class Bed extends StatelessWidget {
               _O2Card(),
               const SizedBox(height: 16),
               ElevatedButton(
-                  style:  const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Color(0xff5DCCFC))),
-                  onPressed: () {},
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(Color(0xff5DCCFC))),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReminderPage())),
                   child: const Text("SET A REMINDER"))
             ],
           ),
