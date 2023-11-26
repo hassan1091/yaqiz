@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/api/api_service.dart';
 import 'package:yaqiz/page/home.dart';
 import 'package:yaqiz/page/signup.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
@@ -101,34 +102,20 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 8),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(isAdmin: isAdmin),
-                        ));
-                  },
-                  child: const Text("Login")),
+              ElevatedButton(onPressed: _login, child: const Text("Login")),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Don’t have an account ?"),
                   InkWell(
+                    onTap: _signup,
                     child: const Text(
                       "Signup",
                       style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline),
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignupPage(),
-                          ));
-                    },
                   ),
                 ],
               )
@@ -137,5 +124,30 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _login() {
+    ApiService()
+        .login(emailController.text, passwordController.text)
+        .then((value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(isAdmin: isAdmin),
+            )))
+        .onError((error, stackTrace) => showDialog(
+              context: context,
+              builder: (context) {
+                debugPrint(error.toString());
+                return AlertDialog(title: Text(error.toString()));
+              },
+            ));
+  }
+
+  void _signup() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignupPage(),
+        ));
   }
 }
