@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController passwordController;
 
   bool isRemember = false;
+  bool isAdmin = false;
 
   @override
   void initState() {
@@ -47,18 +48,14 @@ class _LoginPageState extends State<LoginPage> {
                 hint: "Enter Your Email",
                 type: TextInputType.emailAddress,
               ),
-              const SizedBox(
-                height: 12,
-              ),
+              const SizedBox(height: 12),
               MyTextFormField(
                 controller: passwordController,
                 lable: "Password",
                 hint: "Enter Your Password",
                 isPassword: true,
               ),
-              const SizedBox(
-                height: 12,
-              ),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -77,6 +74,21 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Remember Me")
                     ],
                   ),
+                  Row(
+                    children: [
+                      Checkbox(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(6))),
+                          value: isAdmin,
+                          onChanged: (value) {
+                            setState(() {
+                              isAdmin = value ?? !isAdmin;
+                            });
+                          }),
+                      const Text("Admin")
+                    ],
+                  ),
                   InkWell(
                     child: const Text(
                       "Forgot Password?",
@@ -88,21 +100,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
               ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(isAdmin:true),
+                          builder: (context) => HomePage(isAdmin: isAdmin),
                         ));
                   },
                   child: const Text("Login")),
-              const SizedBox(
-                height: 12,
-              ),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -18,6 +18,7 @@ class _SignupPageState extends State<SignupPage> {
 
   late TextEditingController phoneController;
 
+  bool isAdmin = false;
 
   @override
   void initState() {
@@ -46,7 +47,11 @@ class _SignupPageState extends State<SignupPage> {
               vertical: kToolbarHeight, horizontal: 16),
           child: Form(
             child: ListView(children: [
-              const Center(child: Text("Create an account",style: TextStyle(fontSize: 24),)),
+              const Center(
+                  child: Text(
+                "Create an account",
+                style: TextStyle(fontSize: 24),
+              )),
               const SizedBox(height: 64),
               MyTextFormField(
                 controller: idController,
@@ -70,6 +75,21 @@ class _SignupPageState extends State<SignupPage> {
                 lable: "Password",
                 hint: "Enter Your Password",
                 isPassword: true,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Checkbox(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6))),
+                      value: isAdmin,
+                      onChanged: (value) {
+                        setState(() {
+                          isAdmin = value ?? !isAdmin;
+                        });
+                      }),
+                  const Text("Admin")
+                ],
               ),
               const SizedBox(height: 12),
               ElevatedButton(onPressed: () {}, child: const Text("Signup")),
