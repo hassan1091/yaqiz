@@ -50,7 +50,6 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: widget.type == TextInputType.multiline ? 1 : null,
       decoration: InputDecoration(
           label: Text(widget.lable),
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
