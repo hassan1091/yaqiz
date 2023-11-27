@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Form(
               child: ListView(
             children: [
+              Image.asset("assets/yaqiz_logo.png", height: 200,fit: BoxFit.cover),
               MyTextFormField(
                 controller: emailController,
                 lable: "Email",

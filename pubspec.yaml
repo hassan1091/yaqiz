@@ -97,6 +97,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
+    - assets/yaqiz_logo.png
     - assets/life_line.png
     - assets/blood_drop.png
     - assets/o2.png
