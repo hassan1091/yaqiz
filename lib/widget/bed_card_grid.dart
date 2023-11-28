@@ -48,8 +48,11 @@ class _BedCardGridState extends State<BedCardGrid> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: InkWell(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Bed())),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Bed(deviceId: snapshot.data![index].id!))),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
