@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/api/api_service.dart';
+import 'package:yaqiz/api/medel/user.dart';
+import 'package:yaqiz/page/home.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 import 'package:yaqiz/widget/my_text_form_field.dart';
 
@@ -57,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
                 controller: idController,
                 hint: "Enter Your Employee ID",
                 lable: "Employee ID",
-                type: TextInputType.text,
+                type: const TextInputType.numberWithOptions(),
               ),
               const SizedBox(height: 12),
               MyTextFormField(
@@ -66,9 +69,11 @@ class _SignupPageState extends State<SignupPage> {
                   lable: "Enter Your Email"),
               const SizedBox(height: 12),
               MyTextFormField(
-                  controller: phoneController,
-                  hint: "Enter Your Phone Number",
-                  lable: "Phone Number"),
+                controller: phoneController,
+                hint: "Enter Your Phone Number",
+                lable: "Phone Number",
+                type: const TextInputType.numberWithOptions(),
+              ),
               const SizedBox(height: 12),
               MyTextFormField(
                 controller: passwordController,
@@ -92,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
               const SizedBox(height: 12),
-              ElevatedButton(onPressed: () {}, child: const Text("Signup")),
+              ElevatedButton(onPressed: _signup, child: const Text("Signup")),
               const SizedBox(
                 height: 8,
               ),
@@ -118,5 +123,26 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  void _signup() {
+    ApiService()
+        .signup(User(
+            employeeID: int.parse(idController.text),
+            employeeEmail: emailController.text,
+            employeePassword: passwordController.text,
+            employeePhone: int.parse(phoneController.text),
+            isAdmin: isSupervisor))
+        .then((value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(isAdmin: value),
+            )))
+        .onError((error, stackTrace) => showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(title: Text(error.toString()));
+              },
+            ));
   }
 }

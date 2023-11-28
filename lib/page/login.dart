@@ -122,7 +122,6 @@ class _LoginPageState extends State<LoginPage> {
         .onError((error, stackTrace) => showDialog(
               context: context,
               builder: (context) {
-                debugPrint(error.toString());
                 return AlertDialog(title: Text(error.toString()));
               },
             ));
