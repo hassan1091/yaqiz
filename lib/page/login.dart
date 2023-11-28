@@ -76,21 +76,6 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Remember Me")
                     ],
                   ),
-                  Row(
-                    children: [
-                      Checkbox(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6))),
-                          value: isAdmin,
-                          onChanged: (value) {
-                            setState(() {
-                              isAdmin = value ?? !isAdmin;
-                            });
-                          }),
-                      const Text("Admin")
-                    ],
-                  ),
                   InkWell(
                     child: const Text(
                       "Forgot Password?",
