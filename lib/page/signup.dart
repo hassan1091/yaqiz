@@ -18,7 +18,7 @@ class _SignupPageState extends State<SignupPage> {
 
   late TextEditingController phoneController;
 
-  bool isAdmin = false;
+  bool isSupervisor = false;
 
   @override
   void initState() {
@@ -82,10 +82,10 @@ class _SignupPageState extends State<SignupPage> {
                   Checkbox(
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
-                      value: isAdmin,
+                      value: isSupervisor,
                       onChanged: (value) {
                         setState(() {
-                          isAdmin = value ?? !isAdmin;
+                          isSupervisor = value ?? !isSupervisor;
                         });
                       }),
                   const Text("Supervisor")
