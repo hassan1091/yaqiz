@@ -99,12 +99,15 @@ class _HomePageState extends State<HomePage> {
               elevation: 10,
               child: Column(
                 children: [
-                  const CustomGradientBackground(
+                  CustomGradientBackground(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text("Remainder"), Text("28 Sep")],
+                        children: [
+                          const Text("Remainder"),
+                          Text("${DateTime.now().day}/${DateTime.now().month}")
+                        ],
                       ),
                     ),
                   ),
