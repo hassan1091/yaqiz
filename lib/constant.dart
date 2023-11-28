@@ -4,4 +4,6 @@ class ApiConstants{
   static const String userEndpoint = "/user";
   static const String loginEndpoint = "$userEndpoint/login";
   static const String signupEndpoint = userEndpoint;
+  static const String deviceEndpoint = "/device";
+  static const String signsEndpoint = "$deviceEndpoint/signs";
 }
