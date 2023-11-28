@@ -44,4 +44,15 @@ class ApiService {
     await AppLocalStorage.delete(AppStorageKey.id);
     await AppLocalStorage.delete(AppStorageKey.supervisor);
   }
+
+  Future<User> getUser({int? id}) async {
+    final response = await http.get(
+        Uri.parse(
+            "$baseUrl${ApiConstants.userEndpoint}/${id ?? await AppLocalStorage.getString(AppStorageKey.id)}"),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("get user info error");
+    }
+    return User.fromJson(json.decode(response.body)[0]);
+  }
 }
