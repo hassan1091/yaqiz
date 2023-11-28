@@ -13,22 +13,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController emailController;
+  late TextEditingController idController;
   late TextEditingController passwordController;
 
   bool isRemember = false;
-  bool isAdmin = false;
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
+    idController = TextEditingController();
     passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    emailController.dispose();
+    idController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -45,10 +44,10 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Image.asset("assets/yaqiz_logo.png", height: 200,fit: BoxFit.cover),
               MyTextFormField(
-                controller: emailController,
-                lable: "Email",
-                hint: "Enter Your Email",
-                type: TextInputType.emailAddress,
+                controller: idController,
+                lable: "Employee ID",
+                hint: "Enter Your Employee ID",
+                type: TextInputType.number,
               ),
               const SizedBox(height: 12),
               MyTextFormField(
@@ -114,11 +113,11 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     ApiService()
-        .login(emailController.text, passwordController.text)
+        .login(idController.text, passwordController.text)
         .then((value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(isAdmin: isAdmin),
+              builder: (context) => HomePage(isAdmin: value),
             )))
         .onError((error, stackTrace) => showDialog(
               context: context,
