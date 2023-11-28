@@ -11,7 +11,7 @@ class BedCardGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 32),
+          crossAxisCount: 2, crossAxisSpacing: 16,mainAxisSpacing: 16),
       itemCount: 3,
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -39,12 +39,12 @@ class BedCardGrid extends StatelessWidget {
                   children: [
                     Image.asset("assets/life_line.png",
                         height: 100, color: Colors.white),
-                    Text("BED $index",
-                        style: const TextStyle(
+                    const Text("Device: 36723",
+                        style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold)),
-                    const Text("Name",
+                    const Text("ICU",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
