@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:yaqiz/api/medel/device.dart';
 import 'package:yaqiz/api/medel/user.dart';
+import 'package:yaqiz/api/medel/vital.dart';
 import 'package:yaqiz/constant.dart';
 import 'package:yaqiz/shared_preferences.dart';
 
@@ -63,7 +64,7 @@ class ApiService {
             "$baseUrl${ApiConstants.deviceEndpoint}/${id ?? await AppLocalStorage.getString(AppStorageKey.id)}"),
         headers: {HttpHeaders.contentTypeHeader: contentType});
     if (response.body.isEmpty) {
-      throw Exception("get user info error");
+      throw Exception("get devices info error");
     }
 
     return json
@@ -71,5 +72,15 @@ class ApiService {
         .map((json) => Device.fromJson(json))
         .toList()
         .cast<Device>();
+  }
+
+  Future<Vital> getVital({required int deviceId}) async {
+    final response = await http.get(
+        Uri.parse("$baseUrl${ApiConstants.signsEndpoint}/$deviceId}"),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("get vital info error");
+    }
+    return Vital.fromJson(json.decode(response.body));
   }
 }
