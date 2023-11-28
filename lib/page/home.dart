@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yaqiz/alarm_info.dart';
+import 'package:yaqiz/api/api_service.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
 import 'package:yaqiz/page/login.dart';
@@ -50,14 +51,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.login_outlined),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
-                      );
-                    },
+                    onPressed: _logout,
                   ),
                 ],
               ),
@@ -178,5 +172,21 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void _logout() {
+    ApiService()
+        .logout()
+        .then((_) => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ),
+            ))
+        .onError(
+          (error, stackTrace) => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(title: Text(error.toString()))),
+        );
   }
 }

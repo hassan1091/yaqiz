@@ -22,4 +22,9 @@ class ApiService {
     await AppLocalStorage.setBool(
         AppStorageKey.supervisor, json.decode(response.body)['isAdmin'] != 0);
   }
+
+  Future<void> logout() async {
+    await AppLocalStorage.delete(AppStorageKey.id);
+    await AppLocalStorage.delete(AppStorageKey.supervisor);
+  }
 }
