@@ -88,7 +88,7 @@ class _SignupPageState extends State<SignupPage> {
                           isAdmin = value ?? !isAdmin;
                         });
                       }),
-                  const Text("Admin")
+                  const Text("Supervisor")
                 ],
               ),
               const SizedBox(height: 12),

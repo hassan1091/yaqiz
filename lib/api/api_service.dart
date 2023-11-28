@@ -20,6 +20,6 @@ class ApiService {
     await AppLocalStorage.setString(
         AppStorageKey.id, json.decode(response.body)['Employee_ID'].toString());
     await AppLocalStorage.setBool(
-        AppStorageKey.admin, json.decode(response.body)['isAdmin'] != 0);
+        AppStorageKey.supervisor, json.decode(response.body)['isAdmin'] != 0);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum AppStorageKey { id, admin }
+enum AppStorageKey { id, supervisor }
 
 class AppLocalStorage {
   static SharedPreferences? _prefs;
