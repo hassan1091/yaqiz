@@ -3,4 +3,5 @@ class ApiConstants{
   static String iOSBaseUrl = 'http://127.0.0.1:8080';
   static const String userEndpoint = "/user";
   static const String loginEndpoint = "$userEndpoint/login";
+  static const String signupEndpoint = userEndpoint;
 }
