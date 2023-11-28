@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:yaqiz/api/medel/device.dart';
 import 'package:yaqiz/api/medel/user.dart';
 import 'package:yaqiz/constant.dart';
 import 'package:yaqiz/shared_preferences.dart';
@@ -54,5 +55,21 @@ class ApiService {
       throw Exception("get user info error");
     }
     return User.fromJson(json.decode(response.body)[0]);
+  }
+
+  Future<List<Device>> getDevices({int? id}) async {
+    final response = await http.get(
+        Uri.parse(
+            "$baseUrl${ApiConstants.deviceEndpoint}/${id ?? await AppLocalStorage.getString(AppStorageKey.id)}"),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("get user info error");
+    }
+
+    return json
+        .decode(response.body)
+        .map((json) => Device.fromJson(json))
+        .toList()
+        .cast<Device>();
   }
 }
