@@ -1,66 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/api/api_service.dart';
 import 'package:yaqiz/page/reminder.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
-class Bed extends StatelessWidget {
-  const Bed({super.key});
+class Bed extends StatefulWidget {
+  const Bed({super.key, required this.deviceId});
 
+  final int deviceId;
+
+  @override
+  State<Bed> createState() => _BedState();
+}
+
+class _BedState extends State<Bed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomGradientBackground(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: kToolbarHeight,
-                child: IconButton(
-                  alignment: Alignment.centerLeft,
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                "Bed 4",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _HeartCard(),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
+          child: FutureBuilder(
+            future: ApiService().getVital(deviceId: widget.deviceId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {});
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: kToolbarHeight,
+                      child: IconButton(
+                        alignment: Alignment.centerLeft,
+                        icon: const Icon(Icons.arrow_back_ios),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Bed ${widget.deviceId}",
+                      style: const TextStyle(
+                          fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _BloodPressureCard(),
-                        SizedBox(height: 16),
-                        _TemperatureCard(),
+                        Expanded(
+                          child: _HeartCard(snapshot.data!.hr!),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              _BloodPressureCard(snapshot.data!.bp!),
+                              const SizedBox(height: 16),
+                              _TemperatureCard(snapshot.data!.temp!),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _O2Card(),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(Color(0xff5DCCFC))),
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ReminderPage())),
-                  child: const Text("SET A REMINDER"))
-            ],
+                    const SizedBox(height: 16),
+                    _O2Card(snapshot.data!.spo2!),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Color(0xff5DCCFC))),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ReminderPage())),
+                        child: const Text("SET A REMINDER"))
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -69,7 +91,9 @@ class Bed extends StatelessWidget {
 }
 
 class _HeartCard extends StatelessWidget {
-  const _HeartCard();
+  const _HeartCard(this.bpm);
+
+  final num bpm;
 
   @override
   Widget build(BuildContext context) {
@@ -95,17 +119,19 @@ class _HeartCard extends StatelessWidget {
               const SizedBox(height: 16),
               Image.asset("assets/heart_cut.png", height: 100),
               const SizedBox(height: 16),
-              const Text(
-                "105",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Text(
+                "$bpm",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const Text(
                 "bpm",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              const Text(
-                "105 BPM, 1min ago",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+              Text(
+                "$bpm BPM, 1min ago",
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
               ),
               const SizedBox(),
             ],
@@ -117,7 +143,9 @@ class _HeartCard extends StatelessWidget {
 }
 
 class _BloodPressureCard extends StatelessWidget {
-  const _BloodPressureCard();
+  const _BloodPressureCard(this.bp);
+
+  final String bp;
 
   @override
   Widget build(BuildContext context) {
@@ -156,9 +184,9 @@ class _BloodPressureCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text(
-                    "120",
-                    style: TextStyle(
+                  Text(
+                    bp,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -197,7 +225,9 @@ class _BloodPressureCard extends StatelessWidget {
 }
 
 class _TemperatureCard extends StatelessWidget {
-  const _TemperatureCard();
+  const _TemperatureCard(this.temp);
+
+  final num temp;
 
   @override
   Widget build(BuildContext context) {
@@ -215,21 +245,21 @@ class _TemperatureCard extends StatelessWidget {
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        child: const Padding(
-          padding: EdgeInsets.all(12.0),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "37.6",
-                style: TextStyle(
+                "$temp",
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 "Celsius",
                 style: TextStyle(
                   color: Colors.white,
@@ -246,6 +276,10 @@ class _TemperatureCard extends StatelessWidget {
 }
 
 class _O2Card extends StatelessWidget {
+  const _O2Card(this.spo2);
+
+  final int spo2;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -262,12 +296,12 @@ class _O2Card extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
         ),
-        const Positioned(
+        Positioned(
           top: 75, // Adjust the top position according to your needs
           left: 75, // Adjust the left position according to your needs
           child: Text(
-            '91%',
-            style: TextStyle(
+            '$spo2%',
+            style: const TextStyle(
               fontSize: 56,
               fontWeight: FontWeight.bold,
             ),
