@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yaqiz/alarm_info.dart';
 import 'package:yaqiz/api/api_service.dart';
+import 'package:yaqiz/page/bed.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
 import 'package:yaqiz/page/login.dart';
@@ -19,9 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ValueNotifier<List<AlarmInfo>> alarms =
-      ValueNotifier(Hive.box<AlarmInfo>('alarms').values.toList());
-
   @override
   void initState() {
     super.initState();
@@ -121,44 +121,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      ValueListenableBuilder(
-                        valueListenable: alarms,
-                        builder: (context, value, child) =>
-                            CustomGradientBackground(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: ListView.builder(
-                              itemCount: value.length,
-                              padding: const EdgeInsets.only(bottom: 16),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      child: Text(
-                                        "Visit ${value[index].title}",
-                                        style: const TextStyle(
-                                          color: Colors.blue,
-                                          fontStyle: FontStyle.italic,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      "${value[index].alarmDateTime.hour}:${value[index].alarmDateTime.minute}",
-                                      style: const TextStyle(color: Colors.red),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      const _RemainderList(),
                     ],
                   ),
                 ),
@@ -206,5 +169,98 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (context) => AlertDialog(title: Text(error.toString()))),
         );
+  }
+}
+
+class _RemainderList extends StatefulWidget {
+  const _RemainderList();
+
+  @override
+  State<_RemainderList> createState() => _RemainderListState();
+}
+
+class _RemainderListState extends State<_RemainderList> {
+  Timer? _timer;
+  final ValueNotifier<List<AlarmInfo>> _alarmsNotifier = ValueNotifier([]);
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAlarms();
+    _clearExpiredAlarms();
+
+    _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      _fetchAlarms();
+      _clearExpiredAlarms();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _fetchAlarms() async {
+    final alarms = Hive.box<AlarmInfo>('alarms').values.toList();
+    _alarmsNotifier.value = alarms;
+  }
+
+  void _clearExpiredAlarms() async {
+    final currentDay = DateTime.now();
+    final expiredAlarms = Hive.box<AlarmInfo>('alarms')
+        .values
+        .where((alarm) => alarm.alarmDateTime.isBefore(currentDay))
+        .toList();
+
+    for (final alarm in expiredAlarms) {
+      await Hive.box<AlarmInfo>('alarms').delete(alarm.key);
+    }
+
+    _fetchAlarms();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: _alarmsNotifier,
+      builder: (context, value, child) => CustomGradientBackground(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView.builder(
+            itemCount: value.length,
+            padding: const EdgeInsets.only(bottom: 16),
+            shrinkWrap: true,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Bed(deviceId: int.parse(value[index].title)))),
+                    child: Text(
+                      "Visit Device:${value[index].title}",
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${value[index].alarmDateTime.hour}:${value[index].alarmDateTime.minute}",
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
