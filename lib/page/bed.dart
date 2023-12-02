@@ -71,9 +71,6 @@ class _BedState extends State<Bed> {
                     _O2Card(snapshot.data!.spo2!),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                        style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Color(0xff5DCCFC))),
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(

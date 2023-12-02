@@ -56,9 +56,6 @@ class _ReminderPageState extends State<ReminderPage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(Color(0xff5DCCFC))),
                   onPressed: _addAlarm,
                   child: const Text("SET A REMINDER"))
             ],
