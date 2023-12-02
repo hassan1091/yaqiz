@@ -209,7 +209,12 @@ class _RemainderListState extends State<_RemainderList> {
   }
 
   void _clearExpiredAlarms() async {
-    final currentDay = DateTime.now();
+    final currentDay = DateTime.now().copyWith(
+      day: DateTime.now().day + 1,
+      minute: 0,
+      hour: 0,
+      second: 0,
+    );
     final expiredAlarms = Hive.box<AlarmInfo>('alarms')
         .values
         .where((alarm) => alarm.alarmDateTime.isBefore(currentDay))
@@ -219,7 +224,9 @@ class _RemainderListState extends State<_RemainderList> {
       await Hive.box<AlarmInfo>('alarms').delete(alarm.key);
       NotificationService(
         flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
-      ).showNotification(title: "Yaqiz your attention", body: "Remainder for devise ${alarm.title} check it now");
+      ).showNotification(
+          title: "Yaqiz your attention",
+          body: "Remainder for devise ${alarm.title} check it now");
     }
 
     _fetchAlarms();
