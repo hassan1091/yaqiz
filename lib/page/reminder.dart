@@ -15,17 +15,16 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
-  int _hour = DateTime.now().hour;
-  int _minute = DateTime.now().minute;
+  int _hour = 0;
+  int _minute = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomGradientBackground(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ListView(
             children: [
               SizedBox(
                 height: kToolbarHeight,
@@ -56,8 +55,7 @@ class _ReminderPageState extends State<ReminderPage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                  onPressed: _addAlarm,
-                  child: const Text("SET A REMINDER"))
+                  onPressed: _addAlarm, child: const Text("SET A REMINDER"))
             ],
           ),
         ),
@@ -66,14 +64,23 @@ class _ReminderPageState extends State<ReminderPage> {
   }
 
   Future<void> _addAlarm() async {
-    AlarmInfo alarmInfo = AlarmInfo(
-        alarmDateTime: DateTime.now().copyWith(hour: _hour, minute: _minute),
-        title: widget.deviceId.toString(),
-        isPending: true);
-    Hive.box<AlarmInfo>('alarms')
-        .add(alarmInfo)
-        .then((value) => Navigator.pop(context))
-        .onError((error, stackTrace) => debugPrint(error.toString()));
+    DateTime time = DateTime.now().copyWith(hour: _hour, minute: _minute);
+    if (!time.isBefore(DateTime.now())) {
+      AlarmInfo alarmInfo = AlarmInfo(
+          alarmDateTime: time,
+          title: widget.deviceId.toString(),
+          isPending: true);
+      Hive.box<AlarmInfo>('alarms')
+          .add(alarmInfo)
+          .then((value) => Navigator.pop(context))
+          .onError((error, stackTrace) => debugPrint(error.toString()));
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+            title: Text("Please, do not add a reminder in the past")),
+      );
+    }
   }
 }
 
@@ -87,8 +94,8 @@ class TimeInput extends StatefulWidget {
 }
 
 class _TimeInputState extends State<TimeInput> {
-  int _hour = DateTime.now().hour;
-  int _minute = DateTime.now().minute;
+  int _hour = 0;
+  int _minute = 0;
   bool _isAM = DateTime.now().hour < 12;
 
   @override
@@ -110,10 +117,12 @@ class _TimeInputState extends State<TimeInput> {
                     height: 30,
                     width: 20,
                     child: ListWheelScrollView(
+                      controller:
+                          FixedExtentScrollController(initialItem: _hour),
                       onSelectedItemChanged: (value) {
                         setState(() {
                           _hour = value;
-                          widget.onChange(_minute, _hour);
+                          widget.onChange(_hour, _minute);
                         });
                       },
                       itemExtent: 20,
@@ -126,10 +135,12 @@ class _TimeInputState extends State<TimeInput> {
                     height: 30,
                     width: 20,
                     child: ListWheelScrollView(
+                      controller:
+                          FixedExtentScrollController(initialItem: _minute),
                       onSelectedItemChanged: (value) {
                         setState(() {
                           _minute = value;
-                          widget.onChange(_minute, _hour);
+                          widget.onChange(_hour, _minute);
                         });
                       },
                       itemExtent: 20,
@@ -148,7 +159,7 @@ class _TimeInputState extends State<TimeInput> {
                 setState(() {
                   _isAM = !value;
                   _hour = (_hour + 12) % 24;
-                  widget.onChange(_minute, _hour);
+                  widget.onChange(_hour, _minute);
                 });
               },
             ),
