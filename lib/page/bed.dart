@@ -18,7 +18,7 @@ class _BedState extends State<Bed> {
     return Scaffold(
       body: CustomGradientBackground(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: FutureBuilder(
             future: ApiService().getVital(deviceId: widget.deviceId),
             builder: (context, snapshot) {
@@ -29,8 +29,7 @@ class _BedState extends State<Bed> {
                 onRefresh: () async {
                   setState(() {});
                 },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: ListView(
                   children: [
                     SizedBox(
                       height: kToolbarHeight,
@@ -42,7 +41,6 @@ class _BedState extends State<Bed> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 16),
                     Text(
                       "Device ${widget.deviceId}",
                       style: const TextStyle(
@@ -68,6 +66,7 @@ class _BedState extends State<Bed> {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    _RespiratoryRateCard(snapshot.data!.respiratoryRate!),
                     _O2Card(snapshot.data!.spo2!),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -306,6 +305,55 @@ class _O2Card extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class _RespiratoryRateCard extends StatelessWidget {
+  const _RespiratoryRateCard(this.respiratoryRate);
+
+  final int respiratoryRate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: CustomGradientBackground(
+        colors: [
+          const Color(0xff088475),
+          const Color(0xff088475).withOpacity(0.5),
+          const Color(0xff088475).withOpacity(0.1),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const Text("Respiratory Rate",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                )),
+            Text("$respiratoryRate",
+                style: const TextStyle(
+                  fontSize: 56,
+                )),
+            const Text("Respiratory / min",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                )),
+          ]),
+          Image.asset(
+            "assets/respiratory.png",
+            height: 150,
+          )
+        ]),
+      ),
     );
   }
 }
