@@ -6,7 +6,9 @@ import 'package:yaqiz/widget/my_text_form_field.dart';
 import 'package:yaqiz/widget/smart_switch.dart';
 
 class ReminderPage extends StatefulWidget {
-  const ReminderPage({super.key});
+  const ReminderPage(this.deviceId, {super.key});
+
+  final int deviceId;
 
   @override
   State<ReminderPage> createState() => _ReminderPageState();
@@ -69,7 +71,7 @@ class _ReminderPageState extends State<ReminderPage> {
   Future<void> _addAlarm() async {
     AlarmInfo alarmInfo = AlarmInfo(
         alarmDateTime: DateTime.now().copyWith(hour: _hour, minute: _minute),
-        title: "bed 1",
+        title: widget.deviceId.toString(),
         isPending: true);
     Hive.box<AlarmInfo>('alarms')
         .add(alarmInfo)
@@ -114,10 +116,11 @@ class _TimeInputState extends State<TimeInput> {
                       onSelectedItemChanged: (value) {
                         setState(() {
                           _hour = value;
+                          widget.onChange(_minute, _hour);
                         });
                       },
                       itemExtent: 20,
-                      children: List.generate(24,
+                      children: List.generate(12,
                           (index) => Text(index.toString().padLeft(2, '0'))),
                     ),
                   ),
@@ -129,6 +132,7 @@ class _TimeInputState extends State<TimeInput> {
                       onSelectedItemChanged: (value) {
                         setState(() {
                           _minute = value;
+                          widget.onChange(_minute, _hour);
                         });
                       },
                       itemExtent: 20,
@@ -147,6 +151,7 @@ class _TimeInputState extends State<TimeInput> {
                 setState(() {
                   _isAM = !value;
                   _hour = (_hour + 12) % 24;
+                  widget.onChange(_minute, _hour);
                 });
               },
             ),
