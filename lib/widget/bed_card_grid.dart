@@ -13,6 +13,27 @@ class BedCardGrid extends StatefulWidget {
 }
 
 class _BedCardGridState extends State<BedCardGrid> {
+  final _colors = [
+    [
+      Colors.green,
+      Colors.green.shade400,
+      Colors.green.shade200,
+      Colors.white,
+    ],
+    [
+      Colors.orange,
+      Colors.orange.shade400,
+      Colors.orange.shade200,
+      Colors.white,
+    ],
+    [
+      Colors.red,
+      Colors.red.shade400,
+      Colors.red.shade200,
+      Colors.white,
+    ]
+  ];
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -39,12 +60,7 @@ class _BedCardGridState extends State<BedCardGrid> {
               child: CustomGradientBackground(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Colors.red,
-                  Colors.red.shade400,
-                  Colors.red.shade200,
-                  Colors.white
-                ],
+                colors: _colors[snapshot.data![index].priority! - 1],
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: InkWell(
