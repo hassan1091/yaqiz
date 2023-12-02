@@ -19,7 +19,7 @@ class AlarmInfoAdapter extends TypeAdapter<AlarmInfo> {
     return AlarmInfo(
       alarmDateTime: fields[0] as DateTime,
       title: fields[1] as String,
-      isPending: fields[2] as bool,
+      comment: fields[2] as String,
     );
   }
 
@@ -32,7 +32,7 @@ class AlarmInfoAdapter extends TypeAdapter<AlarmInfo> {
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.isPending);
+      ..write(obj.comment);
   }
 
   @override

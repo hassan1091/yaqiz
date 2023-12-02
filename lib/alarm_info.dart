@@ -11,12 +11,12 @@ class AlarmInfo extends HiveObject {
   String title;
 
   @HiveField(2)
-  bool isPending;
+  String comment;
 
   AlarmInfo(
       {required this.alarmDateTime,
       required this.title,
-      required this.isPending});
+      required this.comment});
 
 
 }
