@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 import 'package:yaqiz/widget/my_text_form_field.dart';
 
@@ -10,25 +11,9 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
-  late final TextEditingController nameController;
-  late final TextEditingController emailController;
-  late final TextEditingController messageController;
-
-  @override
-  void initState() {
-    nameController = TextEditingController();
-    emailController = TextEditingController();
-    messageController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    messageController.dispose();
-    super.dispose();
-  }
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,29 +37,38 @@ class _ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 16),
                   const Text("Contact Us",
-                      style: TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 16),
-                  const MyTextFormField(
+                  MyTextFormField(
                     lable: "Full Name",
                     hint: "Enter Your Full Name",
+                    controller: _nameController,
                   ),
                   const SizedBox(height: 16),
-                  const MyTextFormField(
-                    lable: "Email",
-                    hint: "Enter Your Email",
+                  MyTextFormField(
+                    lable: "Title",
+                    hint: "Enter Your Title",
+                    controller: _titleController,
                   ),
                   const SizedBox(height: 16),
-                  const MyTextFormField(
+                  MyTextFormField(
                     lable: "Message",
                     hint: "Enter Your Message",
+                    controller: _messageController,
                   ),
                   const SizedBox(height: 28),
-                  ElevatedButton(onPressed: () {}, child: const Text("Send"))
+                  ElevatedButton(onPressed: _send, child: const Text("Send"))
                 ]),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _send() async {
+    final uri = Uri.parse(
+        'mailto:yaqiz.official@gmail.com?subject=${_titleController.text}&body=Dear ${_nameController.text},\n\n${_messageController.text}');
+    await launchUrl(uri);
   }
 }
