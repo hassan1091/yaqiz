@@ -15,6 +15,7 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
+  final commentController = TextEditingController();
   int _hour = 0;
   int _minute = 0;
 
@@ -49,9 +50,10 @@ class _ReminderPageState extends State<ReminderPage> {
                 });
               }),
               const SizedBox(height: 16),
-              const MyTextFormField(
+              MyTextFormField(
                 lable: "Comment",
                 hint: "Please write a comment for this visit and next visit",
+                controller: commentController,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -69,7 +71,7 @@ class _ReminderPageState extends State<ReminderPage> {
       AlarmInfo alarmInfo = AlarmInfo(
           alarmDateTime: time,
           title: widget.deviceId.toString(),
-          isPending: true);
+          comment: commentController.text);
       Hive.box<AlarmInfo>('alarms')
           .add(alarmInfo)
           .then((value) => Navigator.pop(context))
