@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:yaqiz/alarm_info.dart';
 import 'package:yaqiz/api/medel/device.dart';
 import 'package:yaqiz/api/medel/user.dart';
 import 'package:yaqiz/api/medel/vital.dart';
@@ -45,6 +47,8 @@ class ApiService {
   Future<void> logout() async {
     await AppLocalStorage.delete(AppStorageKey.id);
     await AppLocalStorage.delete(AppStorageKey.supervisor);
+    Hive.box<AlarmInfo>('alarms')
+        .deleteAll(Hive.box<AlarmInfo>('alarms').values.map((e) => e.key));
   }
 
   Future<User> getUser({int? id}) async {
