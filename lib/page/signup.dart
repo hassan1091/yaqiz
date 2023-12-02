@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yaqiz/api/api_service.dart';
 import 'package:yaqiz/api/medel/user.dart';
+import 'package:yaqiz/field_validation.dart';
 import 'package:yaqiz/page/home.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 import 'package:yaqiz/widget/my_text_form_field.dart';
@@ -13,33 +14,13 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  late TextEditingController idController;
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController emailController;
-
-  late TextEditingController passwordController;
-
-  late TextEditingController phoneController;
-
-  bool isSupervisor = false;
-
-  @override
-  void initState() {
-    idController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    phoneController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    idController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    phoneController.dispose();
-    super.dispose();
-  }
+  bool _isSupervisor = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +30,7 @@ class _SignupPageState extends State<SignupPage> {
           padding: const EdgeInsets.symmetric(
               vertical: kToolbarHeight, horizontal: 16),
           child: Form(
+            key: _formKey,
             child: ListView(children: [
               const Center(
                   child: Text(
@@ -57,29 +39,34 @@ class _SignupPageState extends State<SignupPage> {
               )),
               const SizedBox(height: 64),
               MyTextFormField(
-                controller: idController,
+                controller: _idController,
                 hint: "Enter Your Employee ID",
                 lable: "Employee ID",
                 type: const TextInputType.numberWithOptions(),
+                validator: FieldValidation.validateRequired,
               ),
               const SizedBox(height: 12),
               MyTextFormField(
-                  controller: emailController,
-                  hint: "Email",
-                  lable: "Enter Your Email"),
+                controller: _emailController,
+                hint: "Email",
+                lable: "Enter Your Email",
+                validator: FieldValidation.validateEmail,
+              ),
               const SizedBox(height: 12),
               MyTextFormField(
-                controller: phoneController,
+                controller: _phoneController,
                 hint: "Enter Your Phone Number",
                 lable: "Phone Number",
                 type: const TextInputType.numberWithOptions(),
+                validator: FieldValidation.validatePhone,
               ),
               const SizedBox(height: 12),
               MyTextFormField(
-                controller: passwordController,
+                controller: _passwordController,
                 lable: "Password",
                 hint: "Enter Your Password",
                 isPassword: true,
+                validator: FieldValidation.validatePassword,
               ),
               const SizedBox(height: 12),
               Row(
@@ -87,10 +74,10 @@ class _SignupPageState extends State<SignupPage> {
                   Checkbox(
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
-                      value: isSupervisor,
+                      value: _isSupervisor,
                       onChanged: (value) {
                         setState(() {
-                          isSupervisor = value ?? !isSupervisor;
+                          _isSupervisor = value ?? !_isSupervisor;
                         });
                       }),
                   const Text("Supervisor")
@@ -126,23 +113,25 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void _signup() {
-    ApiService()
-        .signup(User(
-            employeeID: int.parse(idController.text),
-            employeeEmail: emailController.text,
-            employeePassword: passwordController.text,
-            employeePhone: int.parse(phoneController.text),
-            isAdmin: isSupervisor))
-        .then((value) => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(isAdmin: value),
-            )))
-        .onError((error, stackTrace) => showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(title: Text(error.toString()));
-              },
-            ));
+    if (_formKey.currentState!.validate()) {
+      ApiService()
+          .signup(User(
+              employeeID: int.parse(_idController.text),
+              employeeEmail: _emailController.text,
+              employeePassword: _passwordController.text,
+              employeePhone: int.parse(_phoneController.text),
+              isAdmin: _isSupervisor))
+          .then((value) => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(isAdmin: value),
+              )))
+          .onError((error, stackTrace) => showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(title: Text(error.toString()));
+                },
+              ));
+    }
   }
 }
