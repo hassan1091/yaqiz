@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yaqiz/alarm_info.dart';
 import 'package:yaqiz/api/api_service.dart';
+import 'package:yaqiz/notification_service..dart';
 import 'package:yaqiz/page/bed.dart';
 import 'package:yaqiz/page/beds.dart';
 import 'package:yaqiz/page/contact.dart';
@@ -215,6 +217,9 @@ class _RemainderListState extends State<_RemainderList> {
 
     for (final alarm in expiredAlarms) {
       await Hive.box<AlarmInfo>('alarms').delete(alarm.key);
+      NotificationService(
+        flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
+      ).showNotification(title: "Yaqiz your attention", body: "Remainder for devise ${alarm.title} check it now");
     }
 
     _fetchAlarms();
