@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yaqiz/alarm_info.dart';
+import 'package:yaqiz/notification_service..dart';
 import 'package:yaqiz/page/home.dart';
 import 'package:yaqiz/page/login.dart';
 import 'package:yaqiz/shared_preferences.dart';
-
+final notificationService = NotificationService(
+  flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
+);
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(AlarmInfoAdapter());
   await Hive.openBox<AlarmInfo>('alarms');
+  //
+  WidgetsFlutterBinding.ensureInitialized();
+  await notificationService.initialize();
   runApp(const MyApp());
 }
 
