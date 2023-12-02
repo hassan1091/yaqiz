@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Beds",
+                      "Devices",
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),

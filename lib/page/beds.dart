@@ -23,7 +23,7 @@ class BedsPage extends StatelessWidget {
                 }),
           ),
           const SizedBox(height: 16),
-          const Text("Beds",
+          const Text("Devices",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           const BedCardGrid(),

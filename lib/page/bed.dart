@@ -44,7 +44,7 @@ class _BedState extends State<Bed> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "Bed ${widget.deviceId}",
+                      "Device ${widget.deviceId}",
                       style: const TextStyle(
                           fontSize: 28, fontWeight: FontWeight.bold),
                     ),
