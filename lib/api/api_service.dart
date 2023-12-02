@@ -62,6 +62,21 @@ class ApiService {
     return User.fromJson(json.decode(response.body)[0]);
   }
 
+  Future<List<User>> getUsers() async {
+    final response = await http.get(
+        Uri.parse(
+            "$baseUrl${ApiConstants.userEndpoint}/"),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("get user info error");
+    }
+    return json
+        .decode(response.body)
+        .map((json) => User.fromJson(json))
+        .toList()
+        .cast<User>();
+  }
+
   Future<List<Device>> getDevices({int? id}) async {
     final response = await http.get(
         Uri.parse(
