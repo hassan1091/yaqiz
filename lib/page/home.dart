@@ -16,8 +16,8 @@ import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, this.isAdmin = false}) : super(key: key);
-  final bool isAdmin;
+  const HomePage({Key? key, this.isSupervisor = false}) : super(key: key);
+  final bool isSupervisor;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -68,39 +68,11 @@ class _HomePageState extends State<HomePage> {
                     style: const TextStyle(
                         fontSize: 28, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 12),
-                if (widget.isAdmin) ...[
+                if (widget.isSupervisor) ...[
                   const Text("Doctors",
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.separated(
-                      itemCount: 10,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => Column(
-                        children: [
-                          IconButton(
-                              iconSize: 64,
-                              padding: EdgeInsets.zero,
-                              color: Colors.blue,
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const StaffPage()));
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.person_alt_circle,
-                              )),
-                          Text("Staff $index")
-                        ],
-                      ),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(width: 12),
-                    ),
-                  )
+                  const _DoctorsList()
                 ],
                 Card(
                   shape: ContinuousRectangleBorder(
@@ -174,6 +146,51 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+class _DoctorsList extends StatelessWidget {
+  const _DoctorsList();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: FutureBuilder(
+        future: ApiService().getUsers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          return ListView.separated(
+            itemCount: snapshot.data!.length,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => Column(
+              children: [
+                IconButton(
+                    iconSize: 64,
+                    padding: EdgeInsets.zero,
+                    color: Colors.blue,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const StaffPage()));
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.person_alt_circle,
+                    )),
+                Text("Staff ${snapshot.data![index].employeeID}")
+              ],
+            ),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(width: 12),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _RemainderList extends StatefulWidget {
   const _RemainderList();
 
@@ -226,7 +243,8 @@ class _RemainderListState extends State<_RemainderList> {
         flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
       ).showNotification(
           title: "Yaqiz your attention",
-          body: "Remainder for devise ${alarm.title} comments: ${alarm.comment}");
+          body:
+              "Remainder for devise ${alarm.title} comments: ${alarm.comment}");
     }
 
     _fetchAlarms();

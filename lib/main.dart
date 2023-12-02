@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.data![0]!) {
-              return HomePage(isAdmin: snapshot.data![1]!);
+              return HomePage(isSupervisor: snapshot.data![1]!);
             }
             return const LoginPage();
           }),

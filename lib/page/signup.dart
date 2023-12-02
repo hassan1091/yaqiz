@@ -124,7 +124,7 @@ class _SignupPageState extends State<SignupPage> {
           .then((value) => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => HomePage(isAdmin: value),
+                builder: (context) => HomePage(isSupervisor: value),
               )))
           .onError((error, stackTrace) => showDialog(
                 context: context,
