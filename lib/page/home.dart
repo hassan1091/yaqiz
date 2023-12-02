@@ -226,7 +226,7 @@ class _RemainderListState extends State<_RemainderList> {
         flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
       ).showNotification(
           title: "Yaqiz your attention",
-          body: "Remainder for devise ${alarm.title} check it now");
+          body: "Remainder for devise ${alarm.title} comments: ${alarm.comment}");
     }
 
     _fetchAlarms();
