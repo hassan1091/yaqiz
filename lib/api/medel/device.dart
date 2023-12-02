@@ -2,14 +2,16 @@ class Device {
   final int? id;
   final String? location;
   final int? employeeId;
+  final int? priority;
 
-  Device({this.id, this.location, this.employeeId});
+  Device({this.id, this.location, this.employeeId, this.priority});
 
   factory Device.fromJson(Map<String, dynamic> json) {
     return Device(
       id: json['Device_ID'],
       location: json['Device_Location'],
       employeeId: json['Employee_ID'],
+      priority: json['Priority'],
     );
   }
 
