@@ -77,7 +77,8 @@ class _BedState extends State<Bed> {
                         onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ReminderPage())),
+                                builder: (context) =>
+                                    ReminderPage(widget.deviceId))),
                         child: const Text("SET A REMINDER"))
                   ],
                 ),
