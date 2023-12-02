@@ -14,11 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController idController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool isRemember = false;
+  bool _isRemember = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
                   Image.asset("assets/yaqiz_logo.png",
                       height: 200, fit: BoxFit.cover),
                   MyTextFormField(
-                    controller: idController,
+                    controller: _idController,
                     lable: "Employee ID",
                     hint: "Enter Your Employee ID",
                     type: TextInputType.number,
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 12),
                   MyTextFormField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     lable: "Password",
                     hint: "Enter Your Password",
                     isPassword: true,
@@ -58,10 +58,10 @@ class _LoginPageState extends State<LoginPage> {
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(6))),
-                              value: isRemember,
+                              value: _isRemember,
                               onChanged: (value) {
                                 setState(() {
-                                  isRemember = value ?? !isRemember;
+                                  _isRemember = value ?? !_isRemember;
                                 });
                               }),
                           const Text("Remember Me")
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
   void _login() {
     if (_formKey.currentState!.validate()) {
       ApiService()
-          .login(idController.text, passwordController.text)
+          .login(_idController.text, _passwordController.text)
           .then((value) => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
