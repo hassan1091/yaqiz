@@ -64,8 +64,7 @@ class ApiService {
 
   Future<List<User>> getUsers() async {
     final response = await http.get(
-        Uri.parse(
-            "$baseUrl${ApiConstants.userEndpoint}/"),
+        Uri.parse("$baseUrl${ApiConstants.userEndpoint}/"),
         headers: {HttpHeaders.contentTypeHeader: contentType});
     if (response.body.isEmpty) {
       throw Exception("get user info error");
@@ -77,10 +76,10 @@ class ApiService {
         .cast<User>();
   }
 
-  Future<List<Device>> getDevices({int? id}) async {
+  Future<List<Device>> getDevices({int? id, bool all = false}) async {
     final response = await http.get(
         Uri.parse(
-            "$baseUrl${ApiConstants.deviceEndpoint}/${id ?? await AppLocalStorage.getString(AppStorageKey.id)}"),
+            "$baseUrl${ApiConstants.deviceEndpoint}/${all ? "" : id ?? await AppLocalStorage.getString(AppStorageKey.id)}"),
         headers: {HttpHeaders.contentTypeHeader: contentType});
     if (response.body.isEmpty) {
       throw Exception("get devices info error");
