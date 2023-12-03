@@ -18,8 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool _isRemember = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,36 +47,6 @@ class _LoginPageState extends State<LoginPage> {
                     validator: FieldValidation.validateRequired,
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6))),
-                              value: _isRemember,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isRemember = value ?? !_isRemember;
-                                });
-                              }),
-                          const Text("Remember Me")
-                        ],
-                      ),
-                      InkWell(
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline),
-                        ),
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
                   ElevatedButton(onPressed: _login, child: const Text("Login")),
                   const SizedBox(height: 12),
                   Row(
