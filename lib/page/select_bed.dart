@@ -54,10 +54,15 @@ class _SelectBedPageState extends State<SelectBedPage> {
                         return CheckboxListTile(
                           title: Text('Device ${snapshot.data![index].id}'),
                           value: _selectedBeds[index],
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedBeds[index] = value!;
-                            });
+                          onChanged: (value) async {
+                            if (value!) {
+                              await ApiService().addDeviceToUser(
+                                  widget.employeeID, snapshot.data![index].id);
+                            } else {
+                              await ApiService().deleteDeviceOfUser(
+                                  widget.employeeID, snapshot.data![index].id);
+                            }
+                            setState(() {});
                           },
                         );
                       },
