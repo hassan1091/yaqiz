@@ -10,7 +10,7 @@ class Device {
     return Device(
       id: json['Device_ID'],
       location: json['Device_Location'],
-      employeeId: json['Employee_ID'],
+      employeeId: json['User_Employee_ID'],
       priority: json['Priority'],
     );
   }
@@ -19,7 +19,7 @@ class Device {
     return {
       "Device_ID": id,
       "Device_Location": location,
-      "Employee_ID": employeeId,
+      "User_Employee_ID": employeeId,
     };
   }
 }
