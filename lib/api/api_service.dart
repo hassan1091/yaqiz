@@ -92,9 +92,7 @@ class ApiService {
         .cast<Device>();
   }
 
-  Future<List<Device>> getAllDevices({
-    required int id,
-  }) async {
+  Future<List<Device>> getAllDevices({required int id}) async {
     final response = await http.get(
         Uri.parse("$baseUrl${ApiConstants.deviceEndpoint}/all/$id"),
         headers: {HttpHeaders.contentTypeHeader: contentType});
@@ -107,6 +105,26 @@ class ApiService {
         .map((json) => Device.fromJson(json))
         .toList()
         .cast<Device>();
+  }
+
+  Future<void> deleteDeviceOfUser(userId, deviceId) async {
+    final response = await http.delete(
+        Uri.parse(baseUrl + ApiConstants.deviceEndpoint),
+        body: jsonEncode({"userId": userId, "deviceId": deviceId}),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("delete error");
+    }
+  }
+
+  Future<void> addDeviceToUser(userId, deviceId) async {
+    final response = await http.put(
+        Uri.parse(baseUrl + ApiConstants.deviceEndpoint),
+        body: jsonEncode({"userId": userId, "deviceId": deviceId}),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("delete error");
+    }
   }
 
   Future<Vital> getVital({required int deviceId}) async {
