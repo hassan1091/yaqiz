@@ -38,10 +38,11 @@ class StaffPage extends StatelessWidget {
                       label: "Select Beds",
                       assets: "bed",
                       onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SelectBedPage(),
-                          ))),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SelectBedPage(employeeID: employeeID)),
+                          )),
                   const SizedBox(width: 32),
                   _SelectCard(
                       label: "Staff screen",
