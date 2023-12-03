@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: CustomGradientBackground(
         child: FutureBuilder(
-          future: ApiService().getUser(),
+          future: ApiService().getUser(id: widget.employeeID),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
