@@ -6,7 +6,10 @@ import 'package:yaqiz/widget/custom_gradient_background.dart';
 class BedCardGrid extends StatefulWidget {
   const BedCardGrid({
     super.key,
+    this.employeeID,
   });
+
+  final int? employeeID;
 
   @override
   State<BedCardGrid> createState() => _BedCardGridState();
@@ -37,7 +40,7 @@ class _BedCardGridState extends State<BedCardGrid> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ApiService().getDevices(),
+      future: ApiService().getDevices(id: widget.employeeID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -67,8 +70,10 @@ class _BedCardGridState extends State<BedCardGrid> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                Bed(deviceId: snapshot.data![index].id!))),
+                            builder: (context) => Bed(
+                                  deviceId: snapshot.data![index].id!,
+                                  employeeID: widget.employeeID,
+                                ))),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,

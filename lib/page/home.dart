@@ -16,8 +16,10 @@ import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, this.isSupervisor = false}) : super(key: key);
+  const HomePage({Key? key, this.isSupervisor = false, this.employeeID})
+      : super(key: key);
   final bool isSupervisor;
+  final int? employeeID;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -45,24 +47,32 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: kToolbarHeight),
                 SizedBox(
                   height: kToolbarHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.person_outline),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ContactPage()));
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.login_outlined),
-                        onPressed: _logout,
-                      ),
-                    ],
-                  ),
+                  child: widget.employeeID == null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.person_outline),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ContactPage()));
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.login_outlined),
+                              onPressed: _logout,
+                            ),
+                          ],
+                        )
+                      : IconButton(
+                          alignment: Alignment.centerLeft,
+                          icon: const Icon(Icons.arrow_back_ios),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
                 ),
                 Text("Hi, ${snapshot.data!.employeeID}",
                     style: const TextStyle(
@@ -74,31 +84,32 @@ class _HomePageState extends State<HomePage> {
                           TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const _DoctorsList()
                 ],
-                Card(
-                  shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.circular(42),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  elevation: 10,
-                  child: Column(
-                    children: [
-                      CustomGradientBackground(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Remainder"),
-                              Text(
-                                  "${DateTime.now().day}/${DateTime.now().month}")
-                            ],
+                if (widget.employeeID == null)
+                  Card(
+                    shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(42),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    elevation: 10,
+                    child: Column(
+                      children: [
+                        CustomGradientBackground(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("Remainder"),
+                                Text(
+                                    "${DateTime.now().day}/${DateTime.now().month}")
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const _RemainderList(),
-                    ],
+                        const RemainderList(),
+                      ],
+                    ),
                   ),
-                ),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,14 +124,15 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const BedsPage(),
+                                builder: (context) =>
+                                    BedsPage(employeeID: widget.employeeID),
                               ));
                         },
                         child: const Text("Show more")),
                   ],
                 ),
                 const SizedBox(height: 12),
-                const BedCardGrid()
+                BedCardGrid(employeeID: widget.employeeID)
               ],
             );
           },
@@ -173,8 +185,8 @@ class _DoctorsList extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                   StaffPage(snapshot.data![index].employeeID!)));
+                              builder: (context) => StaffPage(
+                                  snapshot.data![index].employeeID!)));
                     },
                     icon: const Icon(
                       CupertinoIcons.person_alt_circle,
@@ -191,14 +203,16 @@ class _DoctorsList extends StatelessWidget {
   }
 }
 
-class _RemainderList extends StatefulWidget {
-  const _RemainderList();
+class RemainderList extends StatefulWidget {
+  const RemainderList({super.key, this.employeeID});
+
+  final int? employeeID;
 
   @override
-  State<_RemainderList> createState() => _RemainderListState();
+  State<RemainderList> createState() => _RemainderListState();
 }
 
-class _RemainderListState extends State<_RemainderList> {
+class _RemainderListState extends State<RemainderList> {
   Timer? _timer;
   final ValueNotifier<List<AlarmInfo>> _alarmsNotifier = ValueNotifier([]);
 
@@ -270,8 +284,9 @@ class _RemainderListState extends State<_RemainderList> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                Bed(deviceId: int.parse(value[index].title)))),
+                            builder: (context) => Bed(
+                                deviceId: int.parse(value[index].title),
+                                employeeID: widget.employeeID))),
                     child: Text(
                       "Visit Device:${value[index].title}",
                       style: const TextStyle(

@@ -4,9 +4,10 @@ import 'package:yaqiz/page/reminder.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class Bed extends StatefulWidget {
-  const Bed({super.key, required this.deviceId});
+  const Bed({super.key, required this.deviceId, this.employeeID});
 
   final int deviceId;
+  final int? employeeID;
 
   @override
   State<Bed> createState() => _BedState();
@@ -69,13 +70,14 @@ class _BedState extends State<Bed> {
                     _RespiratoryRateCard(snapshot.data!.respiratoryRate!),
                     _O2Card(snapshot.data!.spo2!),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ReminderPage(widget.deviceId))),
-                        child: const Text("SET A REMINDER"))
+                    if (widget.employeeID == null)
+                      ElevatedButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ReminderPage(widget.deviceId))),
+                          child: const Text("SET A REMINDER"))
                   ],
                 ),
               );

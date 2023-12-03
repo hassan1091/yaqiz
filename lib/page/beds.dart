@@ -3,7 +3,9 @@ import 'package:yaqiz/widget/bed_card_grid.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class BedsPage extends StatelessWidget {
-  const BedsPage({super.key});
+  const BedsPage({super.key, this.employeeID});
+
+  final int? employeeID;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class BedsPage extends StatelessWidget {
           const Text("Devices",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          const BedCardGrid(),
+          BedCardGrid(employeeID: employeeID),
         ],
       )),
     );
