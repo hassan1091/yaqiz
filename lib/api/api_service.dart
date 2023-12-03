@@ -92,6 +92,23 @@ class ApiService {
         .cast<Device>();
   }
 
+  Future<List<Device>> getAllDevices({
+    required int id,
+  }) async {
+    final response = await http.get(
+        Uri.parse("$baseUrl${ApiConstants.deviceEndpoint}/all/$id"),
+        headers: {HttpHeaders.contentTypeHeader: contentType});
+    if (response.body.isEmpty) {
+      throw Exception("get devices info error");
+    }
+
+    return json
+        .decode(response.body)
+        .map((json) => Device.fromJson(json))
+        .toList()
+        .cast<Device>();
+  }
+
   Future<Vital> getVital({required int deviceId}) async {
     final response = await http.get(
         Uri.parse("$baseUrl${ApiConstants.signsEndpoint}/$deviceId}"),
