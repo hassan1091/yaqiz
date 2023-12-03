@@ -1,36 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:yaqiz/api/api_service.dart';
 import 'package:yaqiz/widget/custom_gradient_background.dart';
 
 class SelectBedPage extends StatefulWidget {
-  const SelectBedPage({super.key});
+  const SelectBedPage({super.key, required this.employeeID});
+
+  final int employeeID;
 
   @override
   State<SelectBedPage> createState() => _SelectBedPageState();
 }
 
 class _SelectBedPageState extends State<SelectBedPage> {
-  final List<bool> _selectedBeds = List.generate(5, (index) => false);
-
-  void _showSelectedBeds() {
-    final selectedBeds = _selectedBeds.asMap().entries.where((entry) => entry.value).map((entry) => entry.key).toList();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Selected Beds'),
-          content: Text('You selected bed(s): ${selectedBeds.join(', ')}'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  late List<bool> _selectedBeds;
 
   @override
   Widget build(BuildContext context) {
@@ -53,28 +35,35 @@ class _SelectBedPageState extends State<SelectBedPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text("Select Bed", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+              const Text("Select Devices",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
               Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: _selectedBeds.length,
-                  itemBuilder: (context, index) {
-                    return CheckboxListTile(
-                      title: Text('Bed $index'),
-                      value: _selectedBeds[index],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedBeds[index] = value!;
-                        });
+                child: FutureBuilder(
+                  future: ApiService().getAllDevices(id: widget.employeeID),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    _selectedBeds =
+                        snapshot.data!.map((e) => e.has).cast<bool>().toList();
+                    return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: _selectedBeds.length,
+                      itemBuilder: (context, index) {
+                        return CheckboxListTile(
+                          title: Text('Device ${snapshot.data![index].id}'),
+                          value: _selectedBeds[index],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedBeds[index] = value!;
+                            });
+                          },
+                        );
                       },
                     );
                   },
                 ),
-              ),
-              ElevatedButton(
-                onPressed: _showSelectedBeds,
-                child: const Text('Save'),
               ),
             ],
           ),
