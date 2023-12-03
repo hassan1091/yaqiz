@@ -174,7 +174,7 @@ class _DoctorsList extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const StaffPage()));
+                                   StaffPage(snapshot.data![index].employeeID!)));
                     },
                     icon: const Icon(
                       CupertinoIcons.person_alt_circle,
