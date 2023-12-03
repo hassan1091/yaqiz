@@ -3,8 +3,9 @@ class Device {
   final String? location;
   final int? employeeId;
   final int? priority;
+  final bool? has;
 
-  Device({this.id, this.location, this.employeeId, this.priority});
+  Device({this.id, this.location, this.employeeId, this.priority, this.has});
 
   factory Device.fromJson(Map<String, dynamic> json) {
     return Device(
@@ -12,6 +13,7 @@ class Device {
       location: json['Device_Location'],
       employeeId: json['User_Employee_ID'],
       priority: json['Priority'],
+      has: json['has'] != null ? json['has'] != 0 : null,
     );
   }
 
