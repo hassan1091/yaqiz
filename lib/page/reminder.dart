@@ -98,7 +98,6 @@ class TimeInput extends StatefulWidget {
 class _TimeInputState extends State<TimeInput> {
   int _hour = 0;
   int _minute = 0;
-  bool _isAM = DateTime.now().hour < 12;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +106,7 @@ class _TimeInputState extends State<TimeInput> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-            'Visit Time: ${_hour.toString().padLeft(2, '0')} : ${_minute.toString().padLeft(2, '0')} ${_isAM ? 'AM' : 'PM'}'),
+            'Visit Time: ${_hour.toString().padLeft(2, '0')} : ${_minute.toString().padLeft(2, '0')}'),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -155,11 +154,10 @@ class _TimeInputState extends State<TimeInput> {
             ),
             const SizedBox(width: 20),
             SmartSwitch(
-              offText: "AM",
-              onText: "PM",
+              offText: "PM",
+              onText: "AM",
               onChanged: (value) {
                 setState(() {
-                  _isAM = !value;
                   _hour = (_hour + 12) % 24;
                   widget.onChange(_hour, _minute);
                 });
