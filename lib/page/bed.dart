@@ -336,17 +336,16 @@ class _RespiratoryRateCard extends StatelessWidget {
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             const Text("Respiratory Rate",
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                 )),
             Text("$respiratoryRate",
                 style: const TextStyle(
                   fontSize: 56,
+                  color: Colors.white
                 )),
             const Text("Respiratory / min",
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 20,
                 )),
           ]),
