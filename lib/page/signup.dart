@@ -43,7 +43,7 @@ class _SignupPageState extends State<SignupPage> {
                 hint: "Enter Your Employee ID",
                 lable: "Employee ID",
                 type: const TextInputType.numberWithOptions(),
-                validator: FieldValidation.validateRequired,
+                validator: FieldValidation.validateId,
               ),
               const SizedBox(height: 12),
               MyTextFormField(

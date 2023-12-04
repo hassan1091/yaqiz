@@ -51,4 +51,13 @@ class FieldValidation {
     }
     return null;
   };
+
+  static FormFieldValidator<String>? validateId = (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an id.';
+    } else if (value.length != 10) {
+      return 'Please enter 10 character id no more no less.';
+    }
+    return null;
+  };
 }
