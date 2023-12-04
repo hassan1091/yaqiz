@@ -116,21 +116,16 @@ class _HeartCard extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              Image.asset("assets/heart_cut.png", height: 100),
+              Image.asset("assets/heart_cut.png", height: 150),
               const SizedBox(height: 16),
               Text(
                 "$bpm",
                 style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const Text(
                 "bpm",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "$bpm BPM, 1min ago",
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
               ),
               const SizedBox(),
             ],
@@ -201,7 +196,6 @@ class _BloodPressureCard extends StatelessWidget {
                       const Text(
                         "mmHg",
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -209,10 +203,6 @@ class _BloodPressureCard extends StatelessWidget {
                     ],
                   ),
                 ],
-              ),
-              const Text(
-                "120 mmHg, 1min ago",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
               ),
               const SizedBox(),
             ],
@@ -248,24 +238,50 @@ class _TemperatureCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                "$temp",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              const Text(
+                "Temperature",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const Text(
-                "Celsius",
+                "Current",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    temp.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(
+                        "assets/temp.png",
+                        width: 50,
+                        color: Colors.white,
+                      ),
+                      const Text(
+                        "Temperature",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(),
             ],
           ),
         ),
@@ -273,7 +289,6 @@ class _TemperatureCard extends StatelessWidget {
     );
   }
 }
-
 class _O2Card extends StatelessWidget {
   const _O2Card(this.spo2);
 
