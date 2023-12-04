@@ -45,6 +45,14 @@ class _BedCardGridState extends State<BedCardGrid> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         }
+        if (snapshot.data!.isEmpty) {
+          return Center(
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.refresh)));
+        }
         return RefreshIndicator(
           onRefresh: () async {
             setState(() {});
