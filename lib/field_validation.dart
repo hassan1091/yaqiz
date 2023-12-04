@@ -46,7 +46,7 @@ class FieldValidation {
       return 'Phone number is required.';
     } else if (value.length != 10) {
       return 'Phone number must be 10 digits long.';
-    } else if (!RegExp(r'^\+05[0-9]{8}$').hasMatch(value)) {
+    } else if (!RegExp(r'^05[0-9]{8}$').hasMatch(value)) {
       return 'Phone number must start with "05" and followed by 8 digits.';
     }
     return null;
