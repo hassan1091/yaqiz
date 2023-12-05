@@ -240,12 +240,7 @@ class _RemainderListState extends State<RemainderList> {
   }
 
   void _clearExpiredAlarms() async {
-    final currentDay = DateTime.now().copyWith(
-      day: DateTime.now().day + 1,
-      minute: 0,
-      hour: 0,
-      second: 0,
-    );
+    final currentDay = DateTime.now();
     final expiredAlarms = Hive.box<AlarmInfo>('alarms')
         .values
         .where((alarm) => alarm.alarmDateTime.isBefore(currentDay))
